@@ -92,9 +92,7 @@ container.addEventListener("mousedown", (e) => {
   actualElement = e.target;
   if (!actualElement.classList.contains("cart")) return;
   document.documentElement.style.cursor = "grab";
-  console.log(actualElement);
   nextElement = actualElement.nextElementSibling;
-  console.log(nextElement);
   actualElement.classList.add("dragged");
   e.preventDefault();
   document.documentElement.addEventListener("mouseup", onMouseUp);
