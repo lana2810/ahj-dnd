@@ -64,7 +64,7 @@ container.addEventListener("click", (e) => {
   }
 });
 let actualElement;
-let currentColomn;
+let nextElement;
 
 const onMouseOver = (e) => {
   actualElement.style.top = e.clientY + "px";
@@ -73,9 +73,8 @@ const onMouseOver = (e) => {
 
 const onMouseUp = (e) => {
   const mouseUpItem = e.target;
-  console.log(mouseUpItem);
   if (!mouseUpItem.classList.contains("cart")) {
-    currentColomn.append(actualElement);
+    nextElement.insertAdjacentElement("beforebegin", actualElement);
   } else {
     mouseUpItem.insertAdjacentElement("afterend", actualElement);
   }
@@ -84,7 +83,7 @@ const onMouseUp = (e) => {
   actualElement.removeAttribute("style");
   document.documentElement.style.cursor = "auto";
   actualElement = undefined;
-  currentColomn = undefined;
+  nextElement = undefined;
   document.documentElement.removeEventListener("mouseup", onMouseUp);
   document.documentElement.removeEventListener("mouseover", onMouseOver);
 };
@@ -93,8 +92,9 @@ container.addEventListener("mousedown", (e) => {
   actualElement = e.target;
   if (!actualElement.classList.contains("cart")) return;
   document.documentElement.style.cursor = "grab";
-  // const previoslyElement = container.querySelector("actualElement+div.cart");
-  currentColomn = actualElement.closest(".colomn");
+  console.log(actualElement);
+  nextElement = actualElement.nextElementSibling;
+  console.log(nextElement);
   actualElement.classList.add("dragged");
   e.preventDefault();
   document.documentElement.addEventListener("mouseup", onMouseUp);
