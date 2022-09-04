@@ -65,12 +65,26 @@ container.addEventListener("click", (e) => {
 });
 let actualElement;
 let nextElement;
+let div;
 
 const onMouseOver = (e) => {
+  const { target } = e;
+  if (!target.classList.contains("cart")) return;
   actualElement.style.top = e.clientY + "px";
   actualElement.style.left = e.clientX + "px";
+  if (!div) {
+    div = document.createElement("div");
+    div.classList.add("cart");
+    div.style.height = actualElement.offsetHeight + "px";
+    target.insertAdjacentElement("afterend", div);
+  }
 };
-
+const onMouseOut = (e) => {
+  const { target } = e;
+  if (!target.classList.contains("cart")) return;
+  div.remove();
+  div = undefined;
+};
 const onMouseUp = (e) => {
   const mouseUpItem = e.target;
   if (!mouseUpItem.classList.contains("cart")) {
@@ -78,14 +92,16 @@ const onMouseUp = (e) => {
   } else {
     mouseUpItem.insertAdjacentElement("afterend", actualElement);
   }
-
+  div.remove();
   actualElement.classList.remove("dragged");
   actualElement.removeAttribute("style");
   document.documentElement.style.cursor = "auto";
+  div = undefined;
   actualElement = undefined;
   nextElement = undefined;
   document.documentElement.removeEventListener("mouseup", onMouseUp);
   document.documentElement.removeEventListener("mouseover", onMouseOver);
+  document.documentElement.removeEventListener("mouseout", onMouseOut);
 };
 
 container.addEventListener("mousedown", (e) => {
@@ -94,7 +110,9 @@ container.addEventListener("mousedown", (e) => {
   document.documentElement.style.cursor = "grab";
   nextElement = actualElement.nextElementSibling;
   actualElement.classList.add("dragged");
+  actualElement.style.border = "1px solid gray";
   e.preventDefault();
   document.documentElement.addEventListener("mouseup", onMouseUp);
   document.documentElement.addEventListener("mouseover", onMouseOver);
+  document.documentElement.addEventListener("mouseout", onMouseOut);
 });

@@ -77,7 +77,7 @@ h3 {
   font-weight: 900;
   cursor: pointer;
 }
-.cart.dragged {
+.dragged {
   position: absolute;
   z-index: 999;
   pointer-events: none;
